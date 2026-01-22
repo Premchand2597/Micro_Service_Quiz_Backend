@@ -25,6 +25,7 @@ public class QuestionController {
 
     @GetMapping("allQuestions")
     public ResponseEntity<List<Question>> getAllQuestions(){
+    	System.out.println("Calling all question endpoint");
         return questionService.getAllQuestions();
     }
 

@@ -62,4 +62,14 @@ public class QuizService {
         return new ResponseEntity<>(0, HttpStatus.SERVICE_UNAVAILABLE);
     }
     
+    @CircuitBreaker(name = "questionService", fallbackMethod = "getAllQuestionsForTestingFallback")
+    public ResponseEntity<List<QuestionWrapper>> getAllQuestionsForTesting() {
+          ResponseEntity<List<QuestionWrapper>> allQuestions = quizInterface.getAllQuestions();
+          return allQuestions;
+    }
+    
+    public ResponseEntity<List<QuestionWrapper>> getAllQuestionsForTestingFallback(Throwable ex) {
+        return new ResponseEntity<>(List.of(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+    
 }
