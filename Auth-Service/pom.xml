@@ -87,25 +87,23 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- Tracing for zipkin -->
+		<!-- Micrometer Tracing (replaces Sleuth) -->
 		<dependency>
 		    <groupId>io.micrometer</groupId>
-		    <artifactId>micrometer-observation</artifactId>
+		    <artifactId>micrometer-tracing-bridge-brave</artifactId>
 		</dependency>
 		
-		<!-- OPTION 1: Open Telemetry as Bridge (RECOMMENDED) -->
-		<!-- Open Telemetry 
-		    - Simplified Observability (metrics, logs, and traces) -->
-		
+		<!-- Zipkin Reporter -->
 		<dependency>
-		    <groupId>io.micrometer</groupId>
-		    <artifactId>micrometer-tracing-bridge-otel</artifactId>
+		    <groupId>io.zipkin.reporter2</groupId>
+		    <artifactId>zipkin-reporter-brave</artifactId>
 		</dependency>
 		
 		<dependency>
-		    <groupId>io.opentelemetry</groupId>
-		    <artifactId>opentelemetry-exporter-zipkin</artifactId>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+
 	</dependencies>
 	
 	<dependencyManagement>
