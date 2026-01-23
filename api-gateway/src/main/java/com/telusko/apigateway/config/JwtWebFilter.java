@@ -13,6 +13,8 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import com.google.common.net.HttpHeaders;
+
 import io.jsonwebtoken.Claims;
 import reactor.core.publisher.Mono;
 
@@ -33,11 +35,14 @@ public class JwtWebFilter implements WebFilter {
 
         String authHeader = exchange.getRequest()
                 .getHeaders()
-                .getFirst("Authorization");
+                .getFirst(HttpHeaders.AUTHORIZATION);
 
+        // No token → let Spring Security handle it
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
+//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return exchange.getResponse().setComplete();
+        	
+        	return chain.filter(exchange);
         }
 
         String token = authHeader.substring(7);
@@ -66,8 +71,10 @@ public class JwtWebFilter implements WebFilter {
                 );
 
         } catch (Exception e) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
+//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return exchange.getResponse().setComplete();
+        	
+        	return chain.filter(exchange);
         }
 	}
 }
