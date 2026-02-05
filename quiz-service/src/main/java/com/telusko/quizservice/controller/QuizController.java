@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.telusko.quizservice.kafka.KafkaProducer;
+import com.telusko.quizservice.model.PayloadUserForKafka;
 import com.telusko.quizservice.model.QuestionWrapper;
 import com.telusko.quizservice.model.QuizDto;
 import com.telusko.quizservice.model.Response;
@@ -22,6 +24,9 @@ public class QuizController {
 
     @Autowired
     QuizService quizService;
+    
+    @Autowired
+    private KafkaProducer kafkaProducer;
 
     @PostMapping("/create")
     public ResponseEntity<String> createQuiz(@RequestBody QuizDto quizDto){
@@ -42,5 +47,17 @@ public class QuizController {
     public ResponseEntity<List<QuestionWrapper>> getAllQuestionsForTesting(){
     	System.out.println("Calling proxy all question endpoint");
         return quizService.getAllQuestionsForTesting();
+    }
+    
+    /*@PostMapping("/publish/{message}")
+    public ResponseEntity<String> publishMessage(@PathVariable String message){
+    	kafkaProducer.sendMessage(message);
+    	return ResponseEntity.ok("Message sent to the topic!");
+    }*/
+    
+    @PostMapping("/publish")
+    public ResponseEntity<String> publishMessage(@RequestBody PayloadUserForKafka payload){
+    	kafkaProducer.sendMessage(payload);
+    	return ResponseEntity.ok("Json message sent to the topic!");
     }
 }
